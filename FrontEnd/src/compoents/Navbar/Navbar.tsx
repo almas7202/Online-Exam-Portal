@@ -1,7 +1,7 @@
 // import React from 'react'
-import Register from '../Register/Register'
+import { useState } from 'react'
 import './Navbar.css'
-const Navbar = () => {
+const Navbar = ({toggleRegister,toggleLogin}) => {
   return (
     <nav className="navbar navbar-expand-lg navbar navbar-light">
     <a className="navbar-brand" href="#">Exam Portal</a>
@@ -29,13 +29,13 @@ const Navbar = () => {
 
       </ul>
 
-        <button className="btn btn-outline-success my-2 my-sm-0 mr-2" onClick={()=>{
-          <Register />
-        }}>Register</button>
-        <button className="btn btn-outline-success my-2 my-sm-0" >Login </button>
-      
+        <button className="btn btn-outline-success my-2 my-sm-0 mr-2" onClick={()=>{toggleRegister()}}>Register</button>
+        <button className="btn btn-outline-success my-2 my-sm-0" onClick={()=>{toggleLogin()}}>Login </button>
     </div>
-  </nav>
+   </nav>
+ 
+  
+  
   )
 }
 
