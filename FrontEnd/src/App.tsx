@@ -10,16 +10,18 @@ function App() {
   const [showLogin,setShowLogin] = useState(false)
   const toggleRegister = () =>{
     setShowRegister(!showRegister)
+    setShowLogin(false)
     console.log(showRegister);
   }
   const toggleLogin = () =>{
     setShowLogin(!showLogin)
+    setShowRegister(false)
   }
   return (
     <>
       <Navbar toggleRegister={toggleRegister} toggleLogin={toggleLogin} />
-      {showRegister ? <Register /> : null}
-      {showLogin ? <Login /> : null}
+      {showRegister && <Register /> }
+      {showLogin && <Login />}
      
     </>
   )

@@ -3,7 +3,7 @@ import { useState } from 'react'
 import './Navbar.css'
 const Navbar = ({toggleRegister,toggleLogin}) => {
   return (
-    <nav className="navbar navbar-expand-lg navbar navbar-light">
+    <nav className="navbar navbar-expand-lg navbar navbar-light ">
     <a className="navbar-brand" href="#">Exam Portal</a>
     <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span className="navbar-toggler-icon"></span>
@@ -28,9 +28,16 @@ const Navbar = ({toggleRegister,toggleLogin}) => {
         </li>
 
       </ul>
+      <ul className="navbar-nav ms-auto">
+                <li className="nav-item">
+                    <button className="btn btn-outline-success mx-3" onClick={()=>toggleRegister()}>Register</button>
+                </li>
+                <li className="nav-item">
+                    <button className="btn btn-outline-success me-3" onClick={()=>toggleLogin()}>Login</button>
+                </li>
+            </ul>
 
-        <button className="btn btn-outline-success my-2 my-sm-0 mr-2" onClick={()=>{toggleRegister()}}>Register</button>
-        <button className="btn btn-outline-success my-2 my-sm-0" onClick={()=>{toggleLogin()}}>Login </button>
+
     </div>
    </nav>
  

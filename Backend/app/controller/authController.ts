@@ -7,12 +7,12 @@ import jwt from 'jsonwebtoken'
 import joi from 'joi'
 import Joi from 'joi';
 export const createUser = async(req:Request,res:Response) =>{
-    const {error} = userValidation.validate(req.body)
-    
+    const {error} = userValidation.validate(req.body.userForm)
+    console.log(req.body)
     if (error) return res.send(error.details[0].message)
 
-    let {userName,userEmail,userPassword,userRole} = req.body
-
+    let {userName,userEmail,userPassword,userRole} = req.body.userForm
+  
     let user = await userModel.findOne({userEmail : userEmail})
     if(user){
         return res.status(403).send('user Already Register')
