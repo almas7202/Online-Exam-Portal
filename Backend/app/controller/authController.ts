@@ -7,12 +7,12 @@ import jwt from 'jsonwebtoken'
 import joi from 'joi'
 import Joi from 'joi';
 export const createUser = async(req:Request,res:Response) =>{
-    const {error} = userValidation.validate(req.body)
-    
+    const {error} = userValidation.validate(req.body.userForm)
+    console.log(req.body)
     if (error) return res.send(error.details[0].message)
 
-    let {userName,userEmail,userPassword,userRole} = req.body
-
+    let {userName,userEmail,userPassword,userRole} = req.body.userForm
+  
     let user = await userModel.findOne({userEmail : userEmail})
     if(user){
         return res.status(403).send('user Already Register')
@@ -30,6 +30,7 @@ export const createUser = async(req:Request,res:Response) =>{
 }
 
 export const userLogin = async (req: Request, res: Response) => {
+    console.log("Function Call")
     const { error } = validate(req.body);
     if (error) {
         return res.status(400).send(error.details[0].message);
@@ -51,7 +52,7 @@ export const userLogin = async (req: Request, res: Response) => {
         return res.status(400).send('Email or password incorrect');
     }
     const token = jwt.sign({ _id: user._id,userRole:user.userRole}, 'jwtPrivateKey', { algorithm: "HS256" });
-    res.status(200).header('x-auth-token', token).send(token)
+    res.status(200).header(token).send(token)
    
 };
 

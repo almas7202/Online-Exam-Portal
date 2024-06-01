@@ -3,3 +3,7 @@
    color: #343a40; /* Text color */
    /* Add more styles as needed */
 }
+
+.btn-set{
+   float: right;
+}

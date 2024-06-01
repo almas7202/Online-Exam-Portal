@@ -20,19 +20,19 @@ const questionschema = new Schema({
         type:String,
         require : true
     },
-    options: [
-        {
-            type: Boolean,
-            text: String,
-            required: true,
-            validate: {
-                validator: function(value:any) {
-                    return value && value.length === 4;
-                },
-                message: 'Answer options should be 4'
+    options: {
+        type: [{
+            type: { type: Boolean, required: true },
+            text: { type: String, required: true }
+        }],
+        validate: {
+            validator: function (value: any) {
+                return value && value.length === 4;
             },
-        }
-    ],    
+            message: 'Answer options should be 4'
+        },
+        required: true
+    },    
     answer:{
         type:Number,
         require:true,
@@ -41,21 +41,24 @@ const questionschema = new Schema({
 
 export default mongoose.model('question',questionschema)
 
+
 export const questionValidation = Joi.object({
-    subject_id:Joi.string().required(),
-    question:joi.string().min(10).required(),
-    options:joi.array().items(joi.object({
-        type:joi.boolean().required(),
-        text:joi.string().required()
-    })).min(4).max(4).required().messages({
+    subject_id: Joi.string().required(),
+    question: Joi.string().required(),
+    options: Joi.array().items(Joi.object({
+        type: Joi.boolean().required(),
+        text: Joi.string().required()
+    })).length(4).required().messages({
         'array.base': 'Options must be an array',
-        'array.min': 'There should be at least 4 options',
-        'array.max': 'There should be at most 4 options',
+        'array.length': 'Exactly 4 options are required',
         'any.required': 'Options are required',
         'object.base': 'Each option must be an object',
         'string.base': 'Option text must be a string',
         'boolean.base': 'Option type must be a boolean',
     }),
-    answer:joi.number().required().min(1).max(4).message("Enter value Between 1 to 4")
-    
-})
+    answer: Joi.number().required().min(1).max(4).message("Enter value Between 1 to 4")
+});
+
+
+
+  

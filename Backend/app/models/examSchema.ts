@@ -8,7 +8,7 @@ const examSchema = new Schema({
         ref:'subject',
         require:true
     },
-    question:[{
+    questions:[{
         type:Schema.Types.ObjectId,
         ref:'question',
         require:true
