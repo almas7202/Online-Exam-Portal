@@ -9,7 +9,7 @@ function App() {
 
   const [showRegister,setShowRegister] = useState(false)
   const [showLogin,setShowLogin] = useState(false)
-  const [setQuestion,setShowQuestion] = useState(false)
+  const [setQuestion,setShowQuestion] = useState(true)
   const toggleRegister = () =>{
     setShowRegister(!showRegister)
     setShowLogin(false)

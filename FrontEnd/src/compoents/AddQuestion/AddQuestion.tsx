@@ -1,8 +1,11 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import MultipeQuestion from "./MultipeQuestion";
+
 
 const AddQuestion = () => {
   const [setSubject, setShowSubject] = useState(null)
+  const [quesiton,setquesiton]= useState(false)
   useEffect(() => {
     const fetchdata = async () => {
       try {
@@ -13,14 +16,17 @@ const AddQuestion = () => {
           }
         });
         setShowSubject(response.data);
+
       } catch (err) {
         console.log("Err while Fetching Data", err)
       }
     }
     fetchdata()
   }, [])
+  console.log(setSubject)
+
   type no_of_question = {
-    subjectName: String,
+    subjectName: string,
     totalQuestion: number
   }
 
@@ -36,115 +42,73 @@ const AddQuestion = () => {
 
   const setquestion = (e: any) => {
     const { name, value } = e.target
-    setquestionForm({ ...questionForm, [name]: value })
+      setquestionForm({ ...questionForm, [name]: parseInt(value) });
+      setquesiton(false)
   }
-  console.log(questionForm)
-  const validation = () => {
+  const validation = () =>{
     let flag = 0
-    if (questionForm.subjectName.length == 0 && questionForm.subjectName === "Select Subject") {
-      document.getElementById('subjectNameErr').innerHTML = 'please select subject'
-    } else {
-      flag = flag + 1
+    if(questionForm.subjectName.length == 0){
+      document.getElementById('subjectNameErr').innerHTML = 'please Select Subject Name'
+    }else{
       document.getElementById('subjectNameErr').innerHTML = ''
-    }
-    if (questionForm.totalQuestion == 0) {
-      document.getElementById('subjectQuestionErr').innerHTML = 'please Enter No of Question'
-    } else {
       flag = flag + 1
+    }
+    if(questionForm.totalQuestion <= 0 || questionForm.totalQuestion > 10){
+      document.getElementById('subjectQuestionErr').innerHTML = 'please Enter Valid Value Between 1 to 10'
+    }else{
       document.getElementById('subjectQuestionErr').innerHTML = ''
+      flag = flag + 1
     }
     return flag
   }
-  const data = JSON.stringify(questionForm)
-  console.log(typeof(data))
-  const handlesubmit = (e: any) => {
+  const handleSubmit = (e:any) =>{
     e.preventDefault()
-    let valid = validation()
-    if (valid == 2) {
-      console.log(questionForm)
-    }
+    const valid = validation()
+    if(valid == 2){
+      setquesiton(true)
+    } 
   }
+  console.log(questionForm)
+
   return (
     <div>
       <div className="container">
         <div className="row">
           <div className="col-3">
-            <form onSubmit={(e) => handlesubmit(e)} className="mt-2">
+            <form onSubmit={(e) => handleSubmit(e)} className="mt-2">
+              {/* <label htmlFor="question" className="px-1">Enter no of Question</label> */}
+
               <select className="form-select mt-3 px-2 p-2" id="subjectName" name="subjectName" onChange={(e) => handleSubject(e)}>
                 <option value="Select Subject">Select Subject</option>
-                {setSubject && setSubject.map((value, idx) => (
-                  <option key={idx} value={value.subjectName}>{value.subjectName}</option>
+                {setSubject && (setSubject as any[]).map((subject, index) => (
+                  <option key={index} value={subject.subjectName}>{subject.subjectName}</option>
                 ))}
               </select>
               <label id="subjectNameErr" className="px-1" style={{ color: "red" }}></label>
-              <label htmlFor="question" className="px-1">Enter no of Question</label>
-              <input type="text" name="totalQuestion"
-                className="form-control px-2"
-                placeholder="Enter of Question you want to Create"
-                onChange={(e) => setquestion(e)} />
-              <label id="subjectQuestionErr" className="px-1" style={{ color: "red" }}></label>
-
-              <button type="submit" className="btn btn-primary mt-2">Add Question Fileds</button>
+                <label htmlFor="question" className="px-1">Enter no of Question</label>
+                <input type="number" name="totalQuestion"
+                  className="form-control px-2"
+                  placeholder="Enter of Question you want to Create"
+                  onChange={(e) => setquestion(e)} />
+                <label id="subjectQuestionErr" className="px-1" style={{ color: "red" }}></label>
+              <button type="submit" className="btn btn-primary mt-2 px-1 mr-1">Add Question Filed</button>
             </form>
           </div>
-        
 
-          <div className="col-9 mt-2">
+
+          <div className="col-9 mt-3">
             {
-              JSON.parse(questionForm).map((value,index)=>{
-                <>
-               
-                <label>Question-{index + 1}</label>
-                <input type="text" className="form-control" placeholder="Enter Question" />
-                <div className="row g-3 mt-1">
-                  <div className="col-sm mb-2">
-                    <input type="text" className="form-control" placeholder="Enter Option-1" aria-label="City" />
-                  </div>
-                  <div className="col-sm">
-                    <input type="text" className="form-control" placeholder="Enter Option-2" aria-label="State" />
-                  </div>
-                  <div className="col-sm">
-                    <input type="text" className="form-control" placeholder="Enter Option-3" aria-label="Zip" />
-                  </div>
-                  <div className="col-sm">
-                    <input type="text" className="form-control" placeholder="Enter Option-4" aria-label="Zip" />
-                  </div>
-                </div>
-                <div>
-                  <label htmlFor="Answer" className="ml-1">SelectAnswer</label>
-                  <div className="form-check">
-                    <input className="form-check-input" type="radio" name="selectanswer" id="flexRadioDefault2" />
-                    <label className="form-check-label">
-                      Option-1
-                    </label>
-                  </div>
-                  <div className="form-check">
-                    <input className="form-check-input" type="radio" name="selectanswer" id="flexRadioDefault2" />
-                    <label className="form-check-label">
-                      Option-2
-                    </label>
-                  </div>
-                  <div className="form-check">
-                    <input className="form-check-input" type="radio" name="selectanswer" id="flexRadioDefault2" />
-                    <label className="form-check-label">
-                      Option-3
-                    </label>
-                  </div>
-                  <div className="form-check">
-                    <input className="form-check-input" type="radio" name="selectanswer" id="flexRadioDefault2" />
-                    <label className="form-check-label">
-                      Option-4
-                    </label>
-                  </div>
-                </div>
-                </>
-              })
-            }
+              quesiton ?
+              [...Array(questionForm.totalQuestion)].map((_, index) => (
+                <MultipeQuestion key={index} />
+              )) : null}
             
-        
 
 
           </div>
+
+
+
         </div>
       </div>
     </div>

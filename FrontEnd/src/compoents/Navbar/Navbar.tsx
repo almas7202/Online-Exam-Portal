@@ -20,7 +20,7 @@ const Navbar = ({toggleRegister,toggleLogin,toggleQuestion}) => {
             Dropdown
           </a>
           <div className="dropdown-menu" aria-labelledby="navbarDropdown">
-            <a className="dropdown-item" onClick={()=>toggleQuestion()}>Add Question</a>
+            <a className="dropdown-item">Add Question</a>
             <a className="dropdown-item" href="#">get Question</a>
             <div className="dropdown-divider"></div>
             <a className="dropdown-item" href="#">Create Exam</a>
