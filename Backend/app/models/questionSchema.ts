@@ -22,7 +22,6 @@ const questionschema = new Schema({
     },
     options: {
         type: [{
-            type: { type: Boolean, required: true },
             text: { type: String, required: true }
         }],
         validate: {
@@ -43,10 +42,9 @@ export default mongoose.model('question',questionschema)
 
 
 export const questionValidation = Joi.object({
-    subject_id: Joi.string().required(),
+    subject_name: Joi.string().required(),
     question: Joi.string().required(),
     options: Joi.array().items(Joi.object({
-        type: Joi.boolean().required(),
         text: Joi.string().required()
     })).length(4).required().messages({
         'array.base': 'Options must be an array',

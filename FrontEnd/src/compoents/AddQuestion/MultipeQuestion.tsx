@@ -1,75 +1,77 @@
+import axios from 'axios';
 import React, { useState } from 'react'
 
-export const MultipeQuestion = () => {
-    interface QuestionType {
-        question: string;
-        options: string[];
-        answer: string;
-    }
+export const MultipeQuestion = ({questionForm}:any) => {
+    const [question, setQuestion] = useState('');
+    const [options, setOptions] = useState(['', '', '', '']);
+    const [selectedAnswer, setSelectedAnswer] = useState('');
 
-    const initialQuestionState: QuestionType = {
-        question: "",
-        options: [],
-        answer: ""
+    const handleOptionChange = (index) => {
+        setSelectedAnswer(index);
     };
-   
-    const [questionForm, setQuestionForm] = useState<QuestionType[]>([initialQuestionState]);
-    const handletxtFilds = (e:any) =>{
-        const {name,value} = e.target
-        setQuestionForm({...questionForm,[name]:value})
-    }
-    console.log(questionForm)
+    console.log(question)
+
+    const handleOptionTextChange = (index, value) => {
+        const newOptions = [...options];
+        newOptions[index] = value;
+        setOptions(newOptions);
+    };
+    console.log(options)
+    console.log(selectedAnswer)
+    const handleFormSubmit = (e:any) => {
+        e.preventDefault();
+
+        const data = {
+            subject:questionForm.subjectName,
+            question: question,
+            options: options,
+            correctAnswer: selectedAnswer
+        };
+        console.log(data)
+        axios.post('http://localhost:3000/question/newquestion', {data}, {
+            headers: {
+                'Authorization': localStorage.getItem('token'),
+            }
+        })
+        .then((res) => console.log(res.data))
+        .then(() => {
+            setQuestion('');
+            setOptions(['', '', '', '']);
+            setSelectedAnswer('');
+        })
+        .catch((err) => console.log(err));
+        console.log(data);
+    };
     return (
         <div>
-            <div className="container">
+        <div className="container">
+            <form onSubmit={(e)=>handleFormSubmit(e)}>
                 <label htmlFor="Enter Question">Question</label>
-                <input type="text" className="form-control" name='question' placeholder="Enter Question" onChange={(e)=>handletxtFilds(e)} />
+                <input type="text" className="form-control" name='question' placeholder="Enter Question" value={question} onChange={(e) => setQuestion(e.target.value)} />
                 <div className="row g-3 mt-1">
-                    <div className="col-sm mb-2">
-                        <input type="text" name='options' className="form-control" placeholder="Enter Option-1" onChange={(e)=>handletxtFilds(e)}  />
-                    </div>
-                    <div className="col-sm">
-                        <input type="text" name='options' className="form-control" placeholder="Enter Option-2" onChange={(e)=>handletxtFilds(e)}/>
-                    </div>
-                    <div className="col-sm">
-                        <input type="text" name='options' className="form-control" placeholder="Enter Option-3" onChange={(e)=>handletxtFilds(e)} />
-                    </div>
-                    <div className="col-sm">
-                        <input type="text" name='options' className="form-control" placeholder="Enter Option-4" onChange={(e)=>handletxtFilds(e)}/>
-                    </div>
+                    {options.map((option, index) => (
+                        <div className="col-sm mb-2" key={index}>
+                            <input type="text" className="form-control" placeholder={`Enter Option-${index + 1}`} value={option} onChange={(e) => handleOptionTextChange(index, e.target.value)} />
+                        </div>
+                    ))}
                 </div>
                 <div>
-                    <label htmlFor="Answer" className="ml-1">SelectAnswer</label>
-                    <div className="form-check">
-                        <input className="form-check-input" type="radio" name="selectanswer" id="flexRadioDefault2" />
-                        <label className="form-check-label">
-                            Option-1
-                        </label>
-                    </div>
-                    <div className="form-check">
-                        <input className="form-check-input" type="radio" name="selectanswer" id="flexRadioDefault2" />
-                        <label className="form-check-label">
-                            Option-2
-                        </label>
-                    </div>
-                    <div className="form-check">
-                        <input className="form-check-input" type="radio" name="selectanswer" id="flexRadioDefault2" />
-                        <label className="form-check-label">
-                            Option-3
-                        </label>
-                    </div>
-                    <div className="form-check">
-                        <input className="form-check-input" type="radio" name="selectanswer" id="flexRadioDefault2" />
-                        <label className="form-check-label">
-                            Option-4
-                        </label>
-                    </div>
+                    <label htmlFor="Answer" className="ml-1">Select Answer</label>
+                    {options.map((option, index) => (
+                        <div className="form-check" key={index}>
+                            <input className="form-check-input" type="radio" name="selectanswer" id={`option-${index + 1}`} checked={selectedAnswer === `Option-${index + 1}`} onChange={() => handleOptionChange(index)} />
+                            <label className="form-check-label" htmlFor={`option-${index + 1}`}>
+                                {`Option-${index + 1}`}
+                            </label>
+                        </div>
+                    ))}
                 </div>
                 <div>
-                    <button className="btn btn-primary mt-2 px mb-2">Save Question</button>
+                    <button type="submit" className="btn btn-primary mt-2 px mb-2">Save Question</button>
                 </div>
-            </div>
+            </form>
         </div>
+    </div>
     )
 }
 

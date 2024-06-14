@@ -84,24 +84,15 @@ const AddQuestion = () => {
                   <option key={index} value={subject.subjectName}>{subject.subjectName}</option>
                 ))}
               </select>
-              <label id="subjectNameErr" className="px-1" style={{ color: "red" }}></label>
-                <label htmlFor="question" className="px-1">Enter no of Question</label>
-                <input type="number" name="totalQuestion"
-                  className="form-control px-2"
-                  placeholder="Enter of Question you want to Create"
-                  onChange={(e) => setquestion(e)} />
-                <label id="subjectQuestionErr" className="px-1" style={{ color: "red" }}></label>
-              <button type="submit" className="btn btn-primary mt-2 px-1 mr-1">Add Question Filed</button>
             </form>
           </div>
 
 
           <div className="col-9 mt-3">
             {
-              quesiton ?
-              [...Array(questionForm.totalQuestion)].map((_, index) => (
-                <MultipeQuestion key={index} />
-              )) : null}
+              questionForm.subjectName ?
+                <MultipeQuestion questionForm={questionForm} />
+               : null}
             
 
 
